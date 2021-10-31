@@ -48,3 +48,7 @@ app.*.map.json
 # Sign Key Report: SHA1, SHA256
 
 signingReport
+
+# Google Services json
+
+android\app\google-services.json
