@@ -51,4 +51,4 @@ signingReport
 
 # Google Services json
 
-android\app\google-services.json
+/android/app/google-services.json
