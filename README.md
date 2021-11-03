@@ -1,16 +1,5 @@
-# quiz_flutter_stable
+### QUIZ FLUTTER
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+A QUIZ app created in flutter language, successor of my old QUIZ app. 
+This app has been created with the main objective as it's predecessor : Provide a medium to practice various competitive exam questions. 
+This app is still in developmental phase, but no promises that it will continued to be improved. 

@@ -5,7 +5,7 @@ import 'package:lottie/lottie.dart';
 import 'package:confetti/confetti.dart';
 import 'package:quiz_flutter_stable/modules/quiz_progress_notifier.dart';
 
-Widget ResultsPage(context) {
+Widget resultsPage(context) {
   var state = Provider.of<StateofQuiz>(context);
   if (state.totalscore >= 250) {
     return HighScoreCelebration();
@@ -99,6 +99,23 @@ class _HighScoreCelebrationState extends State<HighScoreCelebration>
                           fontFamily: 'Audiowide',
                           color: Colors.white),
                     )),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(30.0),
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 100.0),
+                    child: Text(
+                      "Good Job!",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 30,
+                          fontFamily: 'Audiowide',
+                          color: Colors.white),
+                    ),
+                  ),
+                ),
               ),
               Align(
                 alignment: Alignment.center,

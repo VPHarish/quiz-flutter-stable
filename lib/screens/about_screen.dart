@@ -27,7 +27,7 @@ class _AboutScreenState extends State<AboutScreen>
     _controller = VideoPlayerController.asset("images/test_audio.mp4",
         videoPlayerOptions: VideoPlayerOptions(mixWithOthers: false))
       ..initialize().then((value) {
-        _timer = Timer.periodic(Duration(seconds: 6), (timer) {
+        _timer = Timer.periodic(Duration(seconds: 7), (timer) {
           _controller.setVolume(0.20);
           _animationController.forward();
           if (_notification == AppLifecycleState.paused) {

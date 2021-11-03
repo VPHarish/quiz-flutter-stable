@@ -10,6 +10,7 @@ class StateofQuiz with ChangeNotifier {
   var _askedquestions = Set();
   int _currentqno = 1;
   late int i2;
+
   int get currentqno => _currentqno;
   bool get answerclicked => _answerclicked;
 
@@ -59,12 +60,60 @@ class StateofQuiz with ChangeNotifier {
     _currentqno = 1;
     totalscore = 0;
     tempscore = 20;
+    qnumberList = [];
+    currentquestion = 1;
+    currentqindex = 0;
   }
 
   Future<DocumentSnapshot<Map<String, dynamic>>> getnextq(questionno) {
     print("Now: " + questionno.toString());
     var instance = FirebaseFirestore.instance
         .collection("geography")
+        .doc(questionno.toString())
+        .get();
+    return instance;
+  }
+
+  // New code base for improved performance
+
+  int currentquestion = 1;
+  int currentqindex = 0;
+  List qnumberList = [];
+
+  List newQuestionList() {
+    int min = 1;
+    List l = List.generate(16, (i) => min + i);
+    l.shuffle();
+    qnumberList = l;
+    print(l);
+    return l;
+  }
+
+  int currentQno() {
+    if (qnumberList.isEmpty) {
+      print("creating new qlist");
+      qnumberList = newQuestionList();
+      _progress += 1;
+    }
+    print("currentq");
+    return qnumberList[currentqindex];
+  }
+
+  int nextQno() {
+    _answerclicked = false;
+    _progress += 1;
+    print("next qno");
+    var qnumber = qnumberList[currentqindex];
+    currentqindex += 1;
+    return qnumber;
+  }
+
+  Future<DocumentSnapshot<Map<String, dynamic>>> getQuestion(
+      collection, questionno) {
+    print("get doc");
+    print("Now: " + questionno.toString());
+    var instance = FirebaseFirestore.instance
+        .collection(collection)
         .doc(questionno.toString())
         .get();
     return instance;

@@ -8,18 +8,21 @@ class CustomListItem extends StatelessWidget {
     required this.thumbnail,
     required this.title,
     required this.user,
+    required this.redirect,
   }) : super(key: key);
 
   Image thumbnail = Image(image: AssetImage("images/quiz_icon.png"));
   String title = "Title";
   String user = "Description";
+  String redirect = "english";
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         print("yup! Works good! > " + title);
-        Navigator.pushNamed(context, '/quiz_screen_casual');
+        Navigator.pushNamed(context, '/quiz_screen_casual',
+            arguments: {'sub': redirect});
       },
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: 10.0),
@@ -110,13 +113,15 @@ class _ContextState extends State<Context> {
                         return ListView(
                             children: snapshot.data!.docs.map((document) {
                           return CustomListItem(
-                              thumbnail: Image(
-                                height: 65,
-                                image: AssetImage(
-                                    "images/sub_icons/" + document['picture']),
-                              ),
-                              title: document['title'],
-                              user: document['subtitle']);
+                            thumbnail: Image(
+                              height: 65,
+                              image: AssetImage(
+                                  "images/sub_icons/" + document['picture']),
+                            ),
+                            title: document['title'],
+                            user: document['subtitle'],
+                            redirect: document['redirect'],
+                          );
                         }).toList());
                       }),
                 ),

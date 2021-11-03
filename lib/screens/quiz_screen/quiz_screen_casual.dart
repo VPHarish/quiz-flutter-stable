@@ -74,241 +74,258 @@ class _QuizScreenCasualState extends State<QuizScreenCasual>
 
   @override
   Widget build(BuildContext context) {
+    final args = ModalRoute.of(context)!.settings.arguments as Map;
+    var subject = args['sub'].toString().toLowerCase();
     var state = Provider.of<StateofQuiz>(context);
-    var questiondata = state.getnextq(state.currentquiestionno());
-    if (state.progress < 15) {
-      return Scaffold(
-        body: SafeArea(
-          child: Container(
-              alignment: Alignment.center,
-              child: Stack(children: [
-                WaveWidget(
-                  config: CustomConfig(
-                    durations: [12000, 9440, 6800, 5000],
-                    heightPercentages: [0.80, 0.83, 0.86, 0.9],
-                    blur: MaskFilter.blur(BlurStyle.solid, 10),
-                    colors: [
-                      Colors.white70,
-                      Colors.white54,
-                      Colors.white24,
-                      Colors.white,
-                    ],
-                  ),
-                  waveAmplitude: 0,
-                  backgroundColor: Color.fromARGB(160, 204, 51, 255),
-                  size: Size(double.infinity, double.infinity),
-                ),
-                Consumer<StateofQuiz>(
-                  builder: (context, counter, child) {
-                    return Column(
-                      children: [
-                        Text("Progress: " + state.progress.toString()),
-                        Text("Current question number: " +
-                            state.currentqno.toString()),
-                        Text("Total Score: " + state.totalscore.toString()),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 20),
-                          child: FAProgressBar(
-                            size: 20,
-                            progressColor: Colors.lightGreen,
-                            maxValue: 15,
-                            currentValue: state.progress.toInt(),
-                            borderRadius: BorderRadius.zero,
-                          ),
-                        ),
-                        TextButton(
-                            onPressed: () {
-                              Navigator.pushReplacementNamed(
-                                      context, '/results')
-                                  .then((completion) {
-                                state.resetprovidervar();
-                              });
-                            },
-                            child: Text("Results!")),
-                        FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                            future: questiondata,
-                            builder: (_, snapshot) {
-                              if (snapshot.hasError)
-                                return Text('Error = ${snapshot.error}');
-                              if (snapshot.hasData) {
-                                var data = snapshot.data!.data();
-                                var value = data!;
-                                return Container(
-                                  child: Column(
-                                    children: [
-                                      Text('Question: ' + value["question"]),
-                                      Text('Answer: ' + value["answer"]),
-                                      TextButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              var qno = state.newquestionno();
-                                              resetcontrollers();
-                                              questiondata =
-                                                  state.getnextq(qno);
-                                            });
-                                          },
-                                          child: Text("Next Question!")),
-                                      Padding(
-                                        padding: const EdgeInsets.all(10),
-                                        child: SizedBox(
-                                          width: 200,
-                                          height: 80,
-                                          child: AnimatedBuilder(
-                                            animation: _animation1,
-                                            builder: (context, child) =>
-                                                IgnorePointer(
-                                              ignoring: state.answerclicked,
-                                              child: OutlinedButton(
-                                                child: Text(value["A"]),
-                                                style: OutlinedButton.styleFrom(
-                                                    primary: Colors.black,
-                                                    backgroundColor:
-                                                        _animation1.value),
-                                                onPressed: () {
-                                                  setState(
-                                                      () {}); //Remove this.
-                                                  if (_animationController1
-                                                          .status ==
-                                                      AnimationStatus
-                                                          .completed) {
-                                                    // _animationController1.reverse();
-                                                  } else {
-                                                    setNewPosition(
-                                                        "A", value["answer"]);
-                                                    _animationController1
-                                                        .forward();
-                                                  }
-                                                },
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(10),
-                                        child: SizedBox(
-                                          width: 200,
-                                          height: 80,
-                                          child: AnimatedBuilder(
-                                            animation: _animation2,
-                                            builder: (context, child) =>
-                                                IgnorePointer(
-                                              ignoring: state.answerclicked,
-                                              child: OutlinedButton(
-                                                child: Text(value["B"]),
-                                                style: OutlinedButton.styleFrom(
-                                                    primary: Colors.black,
-                                                    backgroundColor:
-                                                        _animation2.value),
-                                                onPressed: () {
-                                                  setState(
-                                                      () {}); //Remove this.
-                                                  if (_animationController2
-                                                          .status ==
-                                                      AnimationStatus
-                                                          .completed) {
-                                                    // _animationController2.reverse();
-                                                  } else {
-                                                    setNewPosition(
-                                                        "B", value["answer"]);
-                                                    _animationController2
-                                                        .forward();
-                                                  }
-                                                },
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(10),
-                                        child: SizedBox(
-                                          width: 200,
-                                          height: 80,
-                                          child: AnimatedBuilder(
-                                            animation: _animation3,
-                                            builder: (context, child) =>
-                                                IgnorePointer(
-                                              ignoring: state.answerclicked,
-                                              child: OutlinedButton(
-                                                child: Text(value["C"]),
-                                                style: OutlinedButton.styleFrom(
-                                                    primary: Colors.black,
-                                                    backgroundColor:
-                                                        _animation3.value),
-                                                onPressed: () {
-                                                  setState(
-                                                      () {}); //Remove this.
-                                                  if (_animationController3
-                                                          .status ==
-                                                      AnimationStatus
-                                                          .completed) {
-                                                    // _animationController3.reverse();
-                                                  } else {
-                                                    setNewPosition(
-                                                        "C", value["answer"]);
-                                                    _animationController3
-                                                        .forward();
-                                                  }
-                                                },
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(10),
-                                        child: SizedBox(
-                                          width: 200,
-                                          height: 80,
-                                          child: AnimatedBuilder(
-                                            animation: _animation4,
-                                            builder: (context, child) =>
-                                                IgnorePointer(
-                                              ignoring: state.answerclicked,
-                                              child: OutlinedButton(
-                                                child: Text(value["D"]),
-                                                style: OutlinedButton.styleFrom(
-                                                    primary: Colors.black,
-                                                    backgroundColor:
-                                                        _animation4.value),
-                                                onPressed: () {
-                                                  setState(
-                                                      () {}); //Remove this.
-                                                  if (_animationController4
-                                                          .status ==
-                                                      AnimationStatus
-                                                          .completed) {
-                                                    // _animationController4.reverse();
-                                                  } else {
-                                                    setNewPosition(
-                                                        "D", value["answer"]);
-                                                    _animationController4
-                                                        .forward();
-                                                  }
-                                                },
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              } else {
-                                return Center(
-                                    child: CircularProgressIndicator());
-                              }
-                            })
+    var questiondata = state.getQuestion(subject, state.currentQno());
+    if (state.progress <= 15) {
+      return WillPopScope(
+        onWillPop: () {
+          state.resetprovidervar();
+          Navigator.pop(context);
+          return Future.value(false);
+        },
+        child: Scaffold(
+          body: SafeArea(
+            child: Container(
+                alignment: Alignment.center,
+                child: Stack(children: [
+                  WaveWidget(
+                    config: CustomConfig(
+                      durations: [12000, 9440, 6800, 5000],
+                      heightPercentages: [0.80, 0.83, 0.86, 0.9],
+                      blur: MaskFilter.blur(BlurStyle.solid, 10),
+                      colors: [
+                        Colors.white70,
+                        Colors.white54,
+                        Colors.white24,
+                        Colors.white,
                       ],
-                    );
-                  },
-                ),
-              ])),
+                    ),
+                    waveAmplitude: 0,
+                    backgroundColor: Color.fromARGB(160, 204, 51, 255),
+                    size: Size(double.infinity, double.infinity),
+                  ),
+                  Consumer<StateofQuiz>(
+                    builder: (context, counter, child) {
+                      return Column(
+                        children: [
+                          Text("Progress: " + state.progress.toString()),
+                          Text("Current question number: " +
+                              state.currentqno.toString()),
+                          Text("Total Score: " + state.totalscore.toString()),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 20),
+                            child: FAProgressBar(
+                              size: 20,
+                              progressColor: Colors.lightGreen,
+                              maxValue: 15,
+                              currentValue: state.progress.toInt(),
+                              borderRadius: BorderRadius.zero,
+                            ),
+                          ),
+                          TextButton(
+                              onPressed: () {
+                                Navigator.pushReplacementNamed(
+                                        context, '/results')
+                                    .then((completion) {
+                                  state.resetprovidervar();
+                                });
+                              },
+                              child: Text("Results!")),
+                          FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                              future: questiondata,
+                              builder: (_, snapshot) {
+                                if (snapshot.hasError)
+                                  return Text('Error = ${snapshot.error}');
+                                if (snapshot.hasData) {
+                                  var data = snapshot.data!.data();
+                                  var value = data!;
+                                  return Container(
+                                    child: Column(
+                                      children: [
+                                        Text('Question: ' + value["question"]),
+                                        Text('Answer: ' + value["answer"]),
+                                        TextButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                var qno = state.nextQno();
+                                                resetcontrollers();
+                                                questiondata = state
+                                                    .getQuestion(subject, qno);
+                                              });
+                                            },
+                                            child: Text("Next Question!")),
+                                        Padding(
+                                          padding: const EdgeInsets.all(10),
+                                          child: SizedBox(
+                                            width: 200,
+                                            height: 80,
+                                            child: AnimatedBuilder(
+                                              animation: _animation1,
+                                              builder: (context, child) =>
+                                                  IgnorePointer(
+                                                ignoring: state.answerclicked,
+                                                child: OutlinedButton(
+                                                  child: Text(value["A"]),
+                                                  style:
+                                                      OutlinedButton.styleFrom(
+                                                          primary: Colors.black,
+                                                          backgroundColor:
+                                                              _animation1
+                                                                  .value),
+                                                  onPressed: () {
+                                                    // setState(
+                                                    //     () {}); //Remove this.
+                                                    if (_animationController1
+                                                            .status ==
+                                                        AnimationStatus
+                                                            .completed) {
+                                                      // _animationController1.reverse();
+                                                    } else {
+                                                      setNewPosition(
+                                                          "A", value["answer"]);
+                                                      _animationController1
+                                                          .forward();
+                                                    }
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(10),
+                                          child: SizedBox(
+                                            width: 200,
+                                            height: 80,
+                                            child: AnimatedBuilder(
+                                              animation: _animation2,
+                                              builder: (context, child) =>
+                                                  IgnorePointer(
+                                                ignoring: state.answerclicked,
+                                                child: OutlinedButton(
+                                                  child: Text(value["B"]),
+                                                  style:
+                                                      OutlinedButton.styleFrom(
+                                                          primary: Colors.black,
+                                                          backgroundColor:
+                                                              _animation2
+                                                                  .value),
+                                                  onPressed: () {
+                                                    // setState(
+                                                    //     () {}); //Remove this.
+                                                    if (_animationController2
+                                                            .status ==
+                                                        AnimationStatus
+                                                            .completed) {
+                                                      // _animationController2.reverse();
+                                                    } else {
+                                                      setNewPosition(
+                                                          "B", value["answer"]);
+                                                      _animationController2
+                                                          .forward();
+                                                    }
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(10),
+                                          child: SizedBox(
+                                            width: 200,
+                                            height: 80,
+                                            child: AnimatedBuilder(
+                                              animation: _animation3,
+                                              builder: (context, child) =>
+                                                  IgnorePointer(
+                                                ignoring: state.answerclicked,
+                                                child: OutlinedButton(
+                                                  child: Text(value["C"]),
+                                                  style:
+                                                      OutlinedButton.styleFrom(
+                                                          primary: Colors.black,
+                                                          backgroundColor:
+                                                              _animation3
+                                                                  .value),
+                                                  onPressed: () {
+                                                    // setState(
+                                                    //     () {}); //Remove this.
+                                                    if (_animationController3
+                                                            .status ==
+                                                        AnimationStatus
+                                                            .completed) {
+                                                      // _animationController3.reverse();
+                                                    } else {
+                                                      setNewPosition(
+                                                          "C", value["answer"]);
+                                                      _animationController3
+                                                          .forward();
+                                                    }
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(10),
+                                          child: SizedBox(
+                                            width: 200,
+                                            height: 80,
+                                            child: AnimatedBuilder(
+                                              animation: _animation4,
+                                              builder: (context, child) =>
+                                                  IgnorePointer(
+                                                ignoring: state.answerclicked,
+                                                child: OutlinedButton(
+                                                  child: Text(value["D"]),
+                                                  style:
+                                                      OutlinedButton.styleFrom(
+                                                          primary: Colors.black,
+                                                          backgroundColor:
+                                                              _animation4
+                                                                  .value),
+                                                  onPressed: () {
+                                                    // setState(
+                                                    //     () {}); //Remove this.
+                                                    if (_animationController4
+                                                            .status ==
+                                                        AnimationStatus
+                                                            .completed) {
+                                                      // _animationController4.reverse();
+                                                    } else {
+                                                      setNewPosition(
+                                                          "D", value["answer"]);
+                                                      _animationController4
+                                                          .forward();
+                                                    }
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                } else {
+                                  return Center(
+                                      child: CircularProgressIndicator());
+                                }
+                              })
+                        ],
+                      );
+                    },
+                  ),
+                ])),
+          ),
         ),
       );
     } else {
-      return ResultsPage(context);
+      return resultsPage(context);
     }
   }
 }

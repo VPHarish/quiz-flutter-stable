@@ -61,24 +61,21 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () => showExitPopup(context),
-      child: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapShot) {
-          if (snapShot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapShot.hasData) {
-            return LoggedInWidget();
-          } else if (snapShot.hasError) {
-            return Center(
-              child: Text("went wrong!@%"),
-            );
-          } else {
-            return SignInScreen();
-          }
-        },
-      ),
+    return StreamBuilder(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapShot) {
+        if (snapShot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapShot.hasData) {
+          return LoggedInWidget();
+        } else if (snapShot.hasError) {
+          return Center(
+            child: Text("went wrong!@%"),
+          );
+        } else {
+          return SignInScreen();
+        }
+      },
     );
   }
 }
@@ -275,11 +272,11 @@ class _LoggedInWidgetState extends State<LoggedInWidget>
                   Navigator.pushNamed(context, '/about');
                 },
                 child: Text("About the App")),
-            TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/test_area');
-                },
-                child: Text("Test Area")),
+            // TextButton(
+            //     onPressed: () {
+            //       Navigator.pushNamed(context, '/test_area');
+            //     },
+            //     child: Text("Test Area")),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(20),

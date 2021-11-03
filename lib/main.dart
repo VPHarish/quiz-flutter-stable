@@ -32,8 +32,8 @@ class MyApp extends StatelessWidget {
           '/context': (context) => Context(),
           '/quiz_screen_casual': (context) => QuizScreenCasual(),
           '/about': (context) => AboutScreen(),
-          // '/test_area': (context) => QuizScreen(),
-          '/results': (context) => ResultsPage(context),
+          // '/test_area': (context) => TestArea(),
+          '/results': (context) => resultsPage(context),
         },
       ),
     );
