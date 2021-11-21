@@ -55,6 +55,7 @@ class StateofQuiz with ChangeNotifier {
   }
 
   void resetprovidervar() {
+    _answerclicked = false;
     _progress = 0;
     _askedquestions = Set();
     _currentqno = 1;
@@ -63,15 +64,6 @@ class StateofQuiz with ChangeNotifier {
     qnumberList = [];
     currentquestion = 1;
     currentqindex = 0;
-  }
-
-  Future<DocumentSnapshot<Map<String, dynamic>>> getnextq(questionno) {
-    print("Now: " + questionno.toString());
-    var instance = FirebaseFirestore.instance
-        .collection("geography")
-        .doc(questionno.toString())
-        .get();
-    return instance;
   }
 
   // New code base for improved performance

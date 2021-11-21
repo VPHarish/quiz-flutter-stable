@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 // class SplashScreen extends StatefulWidget {
 //   const SplashScreen({Key? key}) : super(key: key);
@@ -61,6 +62,24 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  late FirebaseMessaging messaging;
+  @override
+  void initState() {
+    super.initState();
+    messaging = FirebaseMessaging.instance;
+    messaging.getToken().then((value) {
+      // print(value);
+    });
+    FirebaseMessaging.onMessage.listen((RemoteMessage event) {
+      // print("message recieved");
+      print(event.notification!.title);
+      print(event.notification!.body);
+    });
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      // print('Message clicked!');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     bool isusersignedin =

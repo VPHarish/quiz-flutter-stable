@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
 import 'package:quiz_flutter_stable/modules/quiz_progress_notifier.dart';
 import 'package:quiz_flutter_stable/screens/results/result.dart';
-
+import 'package:sizer/sizer.dart';
 import 'package:wave/wave.dart';
 import 'package:wave/config.dart';
 
@@ -79,13 +80,12 @@ class _QuizScreenCasualState extends State<QuizScreenCasual>
     var state = Provider.of<StateofQuiz>(context);
     var questiondata = state.getQuestion(subject, state.currentQno());
     if (state.progress <= 15) {
-      return WillPopScope(
-        onWillPop: () {
-          state.resetprovidervar();
-          Navigator.pop(context);
-          return Future.value(false);
-        },
-        child: Scaffold(
+      return WillPopScope(onWillPop: () {
+        state.resetprovidervar();
+        Navigator.pop(context);
+        return Future.value(false);
+      }, child: Sizer(builder: (context, orientation, deviceType) {
+        return Scaffold(
           body: SafeArea(
             child: Container(
                 alignment: Alignment.center,
@@ -110,29 +110,27 @@ class _QuizScreenCasualState extends State<QuizScreenCasual>
                     builder: (context, counter, child) {
                       return Column(
                         children: [
-                          Text("Progress: " + state.progress.toString()),
-                          Text("Current question number: " +
-                              state.currentqno.toString()),
-                          Text("Total Score: " + state.totalscore.toString()),
                           Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 20),
+                            padding: const EdgeInsets.all(8.0),
+                            child: FittedBox(
+                              child: Text(
+                                  "Total Score: " + state.totalscore.toString(),
+                                  style: TextStyle(
+                                      fontSize: 20.sp,
+                                      fontFamily: 'Audiowide')),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 4),
                             child: FAProgressBar(
-                              size: 20,
+                              size: 4.h,
                               progressColor: Colors.lightGreen,
                               maxValue: 15,
                               currentValue: state.progress.toInt(),
                               borderRadius: BorderRadius.zero,
                             ),
                           ),
-                          TextButton(
-                              onPressed: () {
-                                Navigator.pushReplacementNamed(
-                                        context, '/results')
-                                    .then((completion) {
-                                  state.resetprovidervar();
-                                });
-                              },
-                              child: Text("Results!")),
                           FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
                               future: questiondata,
                               builder: (_, snapshot) {
@@ -144,23 +142,52 @@ class _QuizScreenCasualState extends State<QuizScreenCasual>
                                   return Container(
                                     child: Column(
                                       children: [
-                                        Text('Question: ' + value["question"]),
-                                        Text('Answer: ' + value["answer"]),
-                                        TextButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                var qno = state.nextQno();
-                                                resetcontrollers();
-                                                questiondata = state
-                                                    .getQuestion(subject, qno);
-                                              });
-                                            },
-                                            child: Text("Next Question!")),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            child: ConstrainedBox(
+                                              constraints: BoxConstraints(
+                                                minHeight: 6.h,
+                                                maxHeight: 16.h,
+                                              ),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(10.0),
+                                                child: Text(
+                                                  'Question: ' +
+                                                      value["question"],
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 10.sp,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ),
+                                            ),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                              color: Colors.white,
+                                              boxShadow: [
+                                                BoxShadow(
+                                                    color: Colors.green,
+                                                    spreadRadius: 2.5),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                            child: kReleaseMode
+                                                ? Text(" ")
+                                                : Text('Answer: ' +
+                                                    value["answer"])),
                                         Padding(
                                           padding: const EdgeInsets.all(10),
                                           child: SizedBox(
-                                            width: 200,
-                                            height: 80,
+                                            width: 55.w,
+                                            height: 8.h,
                                             child: AnimatedBuilder(
                                               animation: _animation1,
                                               builder: (context, child) =>
@@ -197,8 +224,8 @@ class _QuizScreenCasualState extends State<QuizScreenCasual>
                                         Padding(
                                           padding: const EdgeInsets.all(10),
                                           child: SizedBox(
-                                            width: 200,
-                                            height: 80,
+                                            width: 55.w,
+                                            height: 8.h,
                                             child: AnimatedBuilder(
                                               animation: _animation2,
                                               builder: (context, child) =>
@@ -235,8 +262,8 @@ class _QuizScreenCasualState extends State<QuizScreenCasual>
                                         Padding(
                                           padding: const EdgeInsets.all(10),
                                           child: SizedBox(
-                                            width: 200,
-                                            height: 80,
+                                            width: 55.w,
+                                            height: 8.h,
                                             child: AnimatedBuilder(
                                               animation: _animation3,
                                               builder: (context, child) =>
@@ -273,8 +300,8 @@ class _QuizScreenCasualState extends State<QuizScreenCasual>
                                         Padding(
                                           padding: const EdgeInsets.all(10),
                                           child: SizedBox(
-                                            width: 200,
-                                            height: 80,
+                                            width: 55.w,
+                                            height: 8.h,
                                             child: AnimatedBuilder(
                                               animation: _animation4,
                                               builder: (context, child) =>
@@ -308,6 +335,52 @@ class _QuizScreenCasualState extends State<QuizScreenCasual>
                                             ),
                                           ),
                                         ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              OutlinedButton(
+                                                  style:
+                                                      OutlinedButton.styleFrom(
+                                                          primary: Colors.black,
+                                                          backgroundColor: Colors
+                                                              .orangeAccent),
+                                                  onPressed: () {
+                                                    kReleaseMode
+                                                        ? Navigator.pop(context)
+                                                        : Navigator
+                                                                .pushReplacementNamed(
+                                                                    context,
+                                                                    '/results')
+                                                            .then((completion) {
+                                                            state
+                                                                .resetprovidervar();
+                                                          });
+                                                  },
+                                                  child: kReleaseMode
+                                                      ? Text("Go Back")
+                                                      : Text("Results!")),
+                                              OutlinedButton(
+                                                  style:
+                                                      OutlinedButton.styleFrom(
+                                                          primary: Colors.black,
+                                                          backgroundColor: Colors
+                                                              .orangeAccent),
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      var qno = state.nextQno();
+                                                      resetcontrollers();
+                                                      questiondata =
+                                                          state.getQuestion(
+                                                              subject, qno);
+                                                    });
+                                                  },
+                                                  child: Text("Next")),
+                                            ],
+                                          ),
+                                        )
                                       ],
                                     ),
                                   );
@@ -322,8 +395,8 @@ class _QuizScreenCasualState extends State<QuizScreenCasual>
                   ),
                 ])),
           ),
-        ),
-      );
+        );
+      }));
     } else {
       return resultsPage(context);
     }

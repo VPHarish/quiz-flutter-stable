@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:lottie/lottie.dart';
 import 'package:video_player/video_player.dart';
+import 'package:sizer/sizer.dart';
 
 class AboutScreen extends StatefulWidget {
   const AboutScreen({Key? key}) : super(key: key);
@@ -53,102 +54,104 @@ class _AboutScreenState extends State<AboutScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: SafeArea(
-        child: Container(
-          alignment: Alignment.center,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Container(
-                padding: EdgeInsets.all(30.0),
-                width: MediaQuery.of(context).size.width * 0.8,
-                height: MediaQuery.of(context).size.width * 0.8,
-                child: VideoPlayer(_controller),
-              ),
-              Padding(
-                padding: EdgeInsets.all(8),
-                child: Text(
-                  "QUIZ",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold),
+    return Sizer(builder: (context, orientation, devicetype) {
+      return Scaffold(
+        backgroundColor: Colors.black,
+        body: SafeArea(
+          child: Container(
+            alignment: Alignment.center,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  padding: EdgeInsets.all(2.w),
+                  width: 40.h,
+                  height: 40.h,
+                  child: VideoPlayer(_controller),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(25.0),
-                child: Text(
-                  "This is the Experimental Branch of my QUIZ app, developed in Flutter, "
-                  " to further develop and provide new features to the app. ",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold),
+                Padding(
+                  padding: EdgeInsets.all(2.h),
+                  child: Text(
+                    "QUIZ",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 32.sp,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
-              Expanded(
-                child: Align(
-                  alignment: FractionalOffset.bottomRight,
-                  child: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        AnimatedOpacity(
-                          opacity: _opacity,
-                          duration: Duration(seconds: 2),
-                          child: Text(
-                            "Created By: ",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold),
+                Padding(
+                  padding: EdgeInsets.all(2.h),
+                  child: Text(
+                    "This is the Experimental Branch of my QUIZ app, developed in Flutter, "
+                    " to further develop and provide new features to the app. ",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 13.sp,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Expanded(
+                  child: Align(
+                    alignment: FractionalOffset.bottomRight,
+                    child: Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          AnimatedOpacity(
+                            opacity: _opacity,
+                            duration: Duration(seconds: 2),
+                            child: Text(
+                              "Created By: ",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.bold),
+                            ),
                           ),
-                        ),
-                        ColorFiltered(
-                          colorFilter: ColorFilter.matrix([
-                            -1, //RED
-                            0,
-                            0,
-                            0,
-                            255, //GREEN
-                            0,
-                            -1,
-                            0,
-                            0,
-                            255, //BLUE
-                            0,
-                            0,
-                            -1,
-                            0,
-                            255, //ALPHA
-                            0,
-                            0,
-                            0,
-                            1,
-                            0,
-                          ]),
-                          child: Lottie.asset(
-                            'images/harish-signature.json',
-                            controller: _animationController,
-                            width: 260,
-                            height: 80,
-                            animate: true,
+                          ColorFiltered(
+                            colorFilter: ColorFilter.matrix([
+                              -1, //RED
+                              0,
+                              0,
+                              0,
+                              255, //GREEN
+                              0,
+                              -1,
+                              0,
+                              0,
+                              255, //BLUE
+                              0,
+                              0,
+                              -1,
+                              0,
+                              255, //ALPHA
+                              0,
+                              0,
+                              0,
+                              1,
+                              0,
+                            ]),
+                            child: Lottie.asset(
+                              'images/harish-signature.json',
+                              controller: _animationController,
+                              width: 60.w,
+                              height: 10.h,
+                              animate: true,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 
   @override

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:sizer/sizer.dart';
 
 class CustomListItem extends StatelessWidget {
   CustomListItem({
@@ -18,49 +19,52 @@ class CustomListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        print("yup! Works good! > " + title);
-        Navigator.pushNamed(context, '/quiz_screen_casual',
-            arguments: {'sub': redirect});
-      },
-      child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 10.0),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Expanded(
-              flex: 1,
-              child: thumbnail,
-            ),
-            Expanded(
-                flex: 4,
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(5.0, 0.0, 0.0, 0.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        title,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
-                          fontSize: 18.0,
+    return Sizer(builder: (context, orientation, devicetype) {
+      return GestureDetector(
+        onTap: () {
+          print("yup! Works good! > " + title);
+          Navigator.pushNamed(context, '/quiz_screen_casual',
+              arguments: {'sub': redirect});
+        },
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 10.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Expanded(
+                flex: 1,
+                child: thumbnail,
+              ),
+              Expanded(
+                  flex: 4,
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(5.0, 0.0, 0.0, 0.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          title,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white,
+                            fontSize: 16.sp,
+                          ),
                         ),
-                      ),
-                      Padding(padding: EdgeInsets.symmetric(vertical: 2.0)),
-                      Text(
-                        user,
-                        style: TextStyle(fontSize: 12.0, color: Colors.white),
-                      ),
-                      Padding(padding: EdgeInsets.symmetric(vertical: 1.0)),
-                    ],
-                  ),
-                )),
-          ],
+                        Padding(padding: EdgeInsets.symmetric(vertical: 2.0)),
+                        Text(
+                          user,
+                          style:
+                              TextStyle(fontSize: 10.sp, color: Colors.white),
+                        ),
+                        Padding(padding: EdgeInsets.symmetric(vertical: 1.0)),
+                      ],
+                    ),
+                  )),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
 

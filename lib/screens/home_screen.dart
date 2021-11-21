@@ -8,6 +8,8 @@ import 'package:lottie/lottie.dart';
 import 'package:flutter/services.dart';
 import 'package:quiz_flutter_stable/modules/google_sign_in.dart';
 
+import 'package:sizer/sizer.dart';
+
 import 'package:sign_button/sign_button.dart';
 
 Future<bool> showExitPopup(context) async {
@@ -140,13 +142,16 @@ class _SignInScreenState extends State<SignInScreen> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(20.0),
-                child: Text(
-                  "Welcome to QUIZ",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 30,
-                      fontFamily: 'Audiowide',
-                      color: Colors.white),
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    "Welcome to QUIZ",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 30,
+                        fontFamily: 'Audiowide',
+                        color: Colors.white),
+                  ),
                 ),
               ),
               Hero(
@@ -197,108 +202,127 @@ class _LoggedInWidgetState extends State<LoggedInWidget>
   Widget build(BuildContext context) {
     bool hello = FirebaseAuth.instance.currentUser != null ? true : false;
     print(hello);
-    return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-        actions: [
-          TextButton(
-              child: Text(
-                "Log out!",
-                style: TextStyle(color: Colors.white),
+    return Sizer(builder: (context, orientation, devicetype) {
+      return Scaffold(
+        backgroundColor: Colors.black,
+        appBar: AppBar(
+          actions: [
+            TextButton(
+                child: Text(
+                  "Log out!",
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () async {
+                  final provider =
+                      Provider.of<GoogleSignInProvider>(context, listen: false);
+                  await provider.logout();
+                  await Navigator.of(context).pushReplacement(PageRouteBuilder(
+                      transitionDuration: Duration(seconds: 2),
+                      pageBuilder: (_, __, ___) => SignInScreen()));
+                })
+          ],
+        ),
+        body: Container(
+          alignment: Alignment.center,
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.all(0.5.h),
+                child: Text(
+                  "PROFILE",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 8.w,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
-              onPressed: () async {
-                final provider =
-                    Provider.of<GoogleSignInProvider>(context, listen: false);
-                await provider.logout();
-                await Navigator.of(context).pushReplacement(PageRouteBuilder(
-                    transitionDuration: Duration(seconds: 2),
-                    pageBuilder: (_, __, ___) => SignInScreen()));
-              })
-        ],
-      ),
-      body: Container(
-        alignment: Alignment.center,
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(30.0),
-              child: Text(
-                "PROFILE",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(5, 5, 5, 15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Hero(
-                    tag: "icon",
-                    child: Image.asset(
-                      "images/quiz_icon.png",
-                      width: MediaQuery.of(context).size.width * 0.35,
+              Padding(
+                padding: EdgeInsets.fromLTRB(5, 0.1.h, 5, 0.5.h),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Hero(
+                      tag: "icon",
+                      child: Image.asset(
+                        "images/quiz_icon.png",
+                        width: 30.w,
+                      ),
                     ),
-                  ),
-                  Icon(Icons.arrow_right_alt_rounded,
-                      color: Colors.white, size: 50),
-                  CircleAvatar(
-                    radius: MediaQuery.of(context).size.width * 0.18,
-                    backgroundImage: NetworkImage(user.photoURL!),
-                  ),
-                ],
+                    Icon(Icons.arrow_right_alt_rounded,
+                        color: Colors.white, size: 15.w),
+                    CircleAvatar(
+                      radius: 15.w,
+                      backgroundImage: NetworkImage(user.photoURL!),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Text(
-              "Welcome, " + user.displayName! + "!",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
-            ),
-            Text(
-              user.email!,
-              style: TextStyle(color: Colors.white, fontSize: 16),
-            ),
-            TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/context');
-                },
-                child: Text("Get Started")),
-            TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/about');
-                },
-                child: Text("About the App")),
-            // TextButton(
-            //     onPressed: () {
-            //       Navigator.pushNamed(context, '/test_area');
-            //     },
-            //     child: Text("Test Area")),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Align(
-                  alignment: FractionalOffset.bottomCenter,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.all(
-                        Radius.circular(MediaQuery.of(context).size.width)),
-                    child: Lottie.asset(
-                      'images/new.json',
-                      width: MediaQuery.of(context).size.width * 0.7,
-                      repeat: true,
-                      reverse: false,
-                      animate: true,
+              FittedBox(
+                child: Text(
+                  " Welcome, " + user.displayName! + "! ",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 6.5.w,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+              FittedBox(
+                child: Text(
+                  " Email: " + user.email! + " ",
+                  style: TextStyle(color: Colors.white, fontSize: 5.5.w),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(0.5.h),
+                child: OutlinedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/context');
+                    },
+                    style: OutlinedButton.styleFrom(
+                        fixedSize: Size(45.w, 3.h),
+                        primary: Colors.black,
+                        backgroundColor: Colors.white),
+                    child: Text("Get Started")),
+              ),
+              Padding(
+                padding: EdgeInsets.all(0.5.h),
+                child: OutlinedButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/about');
+                    },
+                    style: OutlinedButton.styleFrom(
+                        fixedSize: Size(45.w, 3.h),
+                        primary: Colors.black,
+                        backgroundColor: Colors.white),
+                    child: Text("About the App")),
+              ),
+              // TextButton(
+              //     onPressed: () {
+              //       Navigator.pushNamed(context, '/test_area');
+              //     },
+              //     child: Text("Test Area")),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.all(1.h),
+                  child: Align(
+                    alignment: FractionalOffset.bottomCenter,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(70.w)),
+                      child: Lottie.asset(
+                        'images/new.json',
+                        width: 30.h,
+                        repeat: true,
+                        reverse: false,
+                        animate: true,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
